@@ -9,6 +9,7 @@ import study.project.essentials.repository.AnimeRepository;
 import study.project.essentials.requests.AnimePostRequestBody;
 import study.project.essentials.requests.AnimePutRequestBody;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -30,6 +31,7 @@ public class AnimeService {
                 .orElseThrow(() -> new BadRequestException("Anime not Found"));
     }
 
+    @Transactional
     public Anime save(AnimePostRequestBody animePostRequestBody) {
        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
