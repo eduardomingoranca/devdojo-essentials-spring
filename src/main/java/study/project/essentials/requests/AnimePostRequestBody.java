@@ -2,7 +2,7 @@ package study.project.essentials.requests;
 
 import lombok.Data;
 
-  import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 public class AnimePostRequestBody {
