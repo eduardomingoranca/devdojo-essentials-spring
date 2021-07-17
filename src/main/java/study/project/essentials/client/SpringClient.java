@@ -40,13 +40,23 @@ public class SpringClient {
         Anime kingdomSaved = new RestTemplate().postForObject("http://localhost:8080/animes/", kingdom, Anime.class);
         log.info("saved anime {}", kingdomSaved);
         
-        Anime samuraiChampion = Anime.builder().name("Samurai Champion").build();
-        ResponseEntity<Anime> samuraiChampionSaved = new RestTemplate().exchange("http://localhost:8080/animes/",
+        Anime samuraiChamploo = Anime.builder().name("Samurai Champloo").build();
+        ResponseEntity<Anime> samuraiChamplooSaved = new RestTemplate().exchange("http://localhost:8080/animes/",
                 HttpMethod.POST,
-                new HttpEntity<>(samuraiChampion, createJsonHeader()),
+                new HttpEntity<>(samuraiChamploo, createJsonHeader()),
                 Anime.class);
 
-        log.info("saved anime {}", samuraiChampionSaved);
+        log.info("saved anime {}", samuraiChamplooSaved);
+
+        Anime animeToBeUpdated = samuraiChamplooSaved.getBody();
+        animeToBeUpdated.setName("Samurai Champloo 2");
+
+        ResponseEntity<Void> samuraiChamplooUpdated = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.PUT,
+                new HttpEntity<>(animeToBeUpdated, createJsonHeader()),
+                Void.class);
+
+        log.info(samuraiChamplooUpdated);
     }
 
     // enviando um header informando que o content-type da requisição é um application/json
