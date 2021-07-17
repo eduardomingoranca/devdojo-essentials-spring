@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import study.project.essentials.domain.Anime;
+import study.project.essentials.util.AnimeCreator;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -20,7 +21,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Save creates anime when Successful")
     void savePersistAnimeWhenSuccessful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         // verifica se o anime salvo no bando de dados não é nulo
         Assertions.assertThat(animeSaved).isNotNull();
@@ -33,7 +34,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Save updates anime when Succesful")
     void saveUpdateAnimeWhenSuccesful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         // enviando um nome de anime
         animeSaved.setName("Overlord");
@@ -48,7 +49,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Find By Name returns list of anime when Succesful")
     void findByNameReturnsListOfAnimeWhenSuccesful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
         // obtendo o nome do anime salvo no banco de dados
@@ -80,13 +81,6 @@ class AnimeRepositoryTest {
         // verifica se acontece uma exception quando o nome é vazio/invalido
         Assertions.assertThatThrownBy(() -> this.animeRepository.save(anime))
                   .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    // metodo que retorna um objeto anime
-    private Anime createAnime() {
-        return Anime.builder()
-                .name("Hajime no Ippo")
-                .build();
     }
 
 }
