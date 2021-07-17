@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import study.project.essentials.domain.Anime;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @DataJpaTest
@@ -55,18 +56,30 @@ class AnimeRepositoryTest {
         // recebendo uma lista de animes do banco de dados
         List<Anime> animes = this.animeRepository.findByName(name);
 
-        // verifica se a lista de animes não é vazia
-        Assertions.assertThat(animes).isNotEmpty();
-        // verifica se o banco de dados contem um anime salvo
-        Assertions.assertThat(animes).contains(animeSaved);
+        /* verifica se a lista de animes não é vazia e
+           se o banco de dados contem um anime salvo */
+        Assertions.assertThat(animes)
+                .isNotEmpty()
+                .contains(animeSaved);
     }
 
     @Test
     @DisplayName("Find By Name returns empty list when no anime is found")
     void findByNameReturnsEmptyListWhenAnimeIsNotFound() {
         List<Anime> animes = this.animeRepository.findByName("invalid");
-        // verifica se o nome do anime é inválido
+        // verifica se o nome do anime é invalido/vazio
         Assertions.assertThat(animes).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Save throw ConstraintViolationException when name is empty")
+    void saveThrowsConstraintViolationExceptionWhenNameIsEmpty() {
+        // instanciando o objeto anime
+        Anime anime = new Anime();
+
+        // verifica se acontece uma exception quando o nome é vazio/invalido
+        Assertions.assertThatThrownBy(() -> this.animeRepository.save(anime))
+                  .isInstanceOf(ConstraintViolationException.class);
     }
 
     // metodo que retorna um objeto anime
