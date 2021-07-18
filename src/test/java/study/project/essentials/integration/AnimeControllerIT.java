@@ -155,12 +155,18 @@ class AnimeControllerIT {
     @Test
     @DisplayName("save returns anime when successful")
     void saveReturnsAnimeWhenSuccessful() {
+        // criando um anime
         AnimePostRequestBody animePostRequestBody = AnimePostRequestBodyCreator.createAnimePostRequestBody();
+        // realizando uma requisição post de animes
         ResponseEntity<Anime> animeResponseEntity = testRestTemplate.postForEntity("/animes", animePostRequestBody, Anime.class);
 
+        // verificando se o anime não é nulo
         Assertions.assertThat(animeResponseEntity).isNotNull();
+        // verificando se o status é CREATED 201
         Assertions.assertThat(animeResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        // verificando se o anime no corpo da requisição não e nula
         Assertions.assertThat(animeResponseEntity.getBody()).isNotNull();
+        // verificando se o id do anime não é nulo
         Assertions.assertThat(animeResponseEntity.getBody().getId()).isNotNull();
     }
 
@@ -170,12 +176,16 @@ class AnimeControllerIT {
         // criando um anime e salvando
         Anime savedAnime = animeRepository.save(AnimeCreator.createAnimeToBeSaved());
 
+        // atualizando o anime
         savedAnime.setName("new name");
 
+        // realizando uma requisição put
         ResponseEntity<Void> animeResponseEntity = testRestTemplate.exchange("/animes",
                 HttpMethod.PUT, new HttpEntity<>(savedAnime), Void.class);
 
+        // verificando se o anime não é nulo
         Assertions.assertThat(animeResponseEntity).isNotNull();
+        // verificando se o status é NO_CONTENT 204
         Assertions.assertThat(animeResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 }
