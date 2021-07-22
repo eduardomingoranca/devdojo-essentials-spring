@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import study.project.essentials.domain.Anime;
 import study.project.essentials.requests.AnimePostRequestBody;
@@ -45,6 +46,8 @@ public class AnimeController {
     }
 
     @PostMapping
+    // antes de executar o método necessita de uma pré-autorização de um administrador
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody) {
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
