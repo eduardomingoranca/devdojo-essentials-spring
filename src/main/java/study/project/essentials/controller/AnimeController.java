@@ -43,9 +43,7 @@ public class AnimeController {
     }
 
     // obter o usuário autenticado na requisição
-    @GetMapping(path = "by-id/{id}")
-    // para executar o método precisa de um usuário com permissão
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "/admin/by-id/{id}")
     public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable long id,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         log.info(userDetails);
@@ -57,9 +55,7 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findByName(name));
     }
 
-    @PostMapping
-    // para executar o método precisa de um usuário com permissão
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(path = "/admin")
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody) {
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
