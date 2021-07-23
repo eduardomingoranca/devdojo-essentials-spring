@@ -1,5 +1,6 @@
 package study.project.essentials.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -8,12 +9,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import study.project.essentials.service.ProjectUserDetailsService;
 
 // configuração que será carregada por toda a aplicação
 @EnableWebSecurity
 @Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
+@SuppressWarnings("java:55344")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final ProjectUserDetailsService projectUserDetailsService;
 
     /**
      * basicAuthenticationFilter
@@ -45,15 +51,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // criptografia de senha
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        log.info("Password encoded {}", passwordEncoder.encode("test"));
+        log.info("Password encoded {}", passwordEncoder.encode("project"));
         // usuarios em memória
         auth.inMemoryAuthentication()
-                .withUser("eduardo")
+                .withUser("Noah")
                 .password(passwordEncoder.encode("project"))
                 .roles("USER", "ADMIN")
                 .and()
-                .withUser("abraham")
+                .withUser("Tyler")
                 .password(passwordEncoder.encode("project"))
                 .roles("USER");
+
+        // usuarios no banco de dados
+        auth.userDetailsService(projectUserDetailsService)
+        .passwordEncoder(passwordEncoder);
     }
 }

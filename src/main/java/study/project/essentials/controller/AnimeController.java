@@ -44,6 +44,8 @@ public class AnimeController {
 
     // obter o usuário autenticado na requisição
     @GetMapping(path = "by-id/{id}")
+    // para executar o método precisa de um usuário com permissão
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable long id,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         log.info(userDetails);
