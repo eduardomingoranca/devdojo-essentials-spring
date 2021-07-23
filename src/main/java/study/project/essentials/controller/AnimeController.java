@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import study.project.essentials.domain.Anime;
 import study.project.essentials.requests.AnimePostRequestBody;
@@ -40,13 +42,21 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
+    // obter o usuário autenticado na requisição
+    @GetMapping(path = "by-id/{id}")
+    public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable long id,
+                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        log.info(userDetails);
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
+    }
+
     @GetMapping(path = "/find")
     public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
         return ResponseEntity.ok(animeService.findByName(name));
     }
 
     @PostMapping
-    // antes de executar o método necessita de uma pré-autorização de um administrador
+    // para executar o método precisa de um usuário com permissão
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody) {
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
@@ -59,3 +69,4 @@ public class AnimeController {
     }
 
 }
+
