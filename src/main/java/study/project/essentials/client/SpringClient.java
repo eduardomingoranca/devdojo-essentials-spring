@@ -12,6 +12,8 @@ import java.util.List;
 @Log4j2
 public class SpringClient {
     public static void main(String[] args) {
+        /* RestTemplate >> consumir/extrai informações de uma API externa/outra aplicação
+           através do protocolo HTTP */
         // getForEntity >> retorna o objeto dentro de um wrapper
         ResponseEntity<Anime> entity = new RestTemplate().getForEntity("http://localhost:8080/animes/{id}", Anime.class,1);
         log.info(entity);

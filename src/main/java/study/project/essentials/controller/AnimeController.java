@@ -43,7 +43,7 @@ public class AnimeController {
     }
 
     // obter o usuário autenticado na requisição
-    @GetMapping(path = "/admin/by-id/{id}")
+    @GetMapping(path = "by-id/{id}")
     public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable long id,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         log.info(userDetails);
@@ -55,12 +55,12 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findByName(name));
     }
 
-    @PostMapping(path = "/admin")
+    @PostMapping
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody) {
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping(path = "/admin")
     public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody) {
         animeService.replace(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

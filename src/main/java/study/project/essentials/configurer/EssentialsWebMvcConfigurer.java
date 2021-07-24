@@ -10,7 +10,7 @@ import java.util.List;
 
 // configuração global
 @Configuration
-public class EssentialsWebvcConfigurer implements WebMvcConfigurer {
+public class EssentialsWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
