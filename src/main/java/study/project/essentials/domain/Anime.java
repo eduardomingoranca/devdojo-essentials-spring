@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+// @Builder >> simplifica a criação do objeto
 @Builder
 public class Anime {
 

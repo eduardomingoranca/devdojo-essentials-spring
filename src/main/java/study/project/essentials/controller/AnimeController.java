@@ -67,6 +67,7 @@ public class AnimeController {
     }
 
     @PutMapping(path = "/admin")
+    // especificando o retorno do método no swagger
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successful Operation"),
             @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The Database")
