@@ -10,3 +10,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+info:
+  app: Spring Boot Project Essentials
+  github: https://github.com/eduardomingoranca/essentials-spring-boot
